@@ -110,6 +110,7 @@ function mostrarCarrito() {
       </tr>
     </tfoot>
   </table>
+
   `;
 }
 
