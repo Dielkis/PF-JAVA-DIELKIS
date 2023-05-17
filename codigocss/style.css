@@ -1,0 +1,423 @@
+/*VARIABLES*/ /*VARIABLE GLOBALES*/
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;1,600&family=Farsan&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Farsan&display=swap");
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+* {
+  margin: 0%;
+  padding: 0%;
+}
+
+/*Secciones*/
+.img-logo {
+  width: 150px;
+}
+
+.gallery-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-auto-rows: auto;
+  padding: 6px;
+  grid-gap: 10px;
+  margin-right: 0px;
+}
+
+.gallery__img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.gallery__item {
+  position: relative;
+}
+
+.gallery__title {
+  position: absolute;
+  bottom: 0%;
+  color: white;
+  background: linear-gradient(rgba(220, 215, 215, 0)), rgb(249, 244, 244);
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+}
+
+@media (min-width: 768px) {
+  .gallery-container {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: auto;
+    padding: 20px;
+    grid-gap: 10px;
+  }
+}
+@media (min-width: 1024px) {
+  .gallery-container {
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    padding: 20px;
+    grid-gap: 10px;
+  }
+}
+.fondo-contacto {
+  background-image: url("../recursos/camisasMotosyBikes.png");
+  background-size: cover;
+  width: 100%;
+}
+
+.img-horarios {
+  width: 800px;
+  height: 800px;
+  margin-left: 504px;
+  padding: 20px;
+  display: flex;
+}
+
+@media (min-width: 767px) {
+  .img-horarios {
+    width: 400px;
+    height: 400px;
+    display: flex;
+    margin-left: 0;
+  }
+}
+@media (max-width: 425px) {
+  .img-horarios {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    margin-left: 0;
+  }
+}
+@media (max-width: 687px) {
+  .img-horarios {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    margin-left: 0;
+  }
+}
+.container-formulario {
+  background-color: #181920;
+}
+
+.TituloFormulario {
+  font-family: "Barlow", sans-serif;
+  font-weight: 600;
+  color: #F9F9F9;
+  text-align: center;
+}
+
+h4 {
+  font-family: "Farsan", cursive;
+  font-weight: 400;
+  color: #9b9b9b;
+  line-height: 1.5;
+}
+
+/* ///// inputs /////*/
+input:focus ~ label, textarea:focus ~ label, input:valid ~ label, textarea:valid ~ label {
+  font-size: 0.75em;
+  color: #999;
+  top: -5px;
+  transition: all 0.225s ease;
+}
+
+.styled-input {
+  float: left;
+  width: 293px;
+  margin: 1rem 0;
+  position: relative;
+  border-radius: 4px;
+}
+
+@media only screen and (max-width: 768px) {
+  .styled-input {
+    width: 100%;
+  }
+}
+.styled-input label {
+  color: #999;
+  padding: 1.3rem 30px 1rem 30px;
+  position: absolute;
+  top: 10px;
+  left: 0;
+  transition: all 0.25s ease;
+  pointer-events: none;
+}
+
+.styled-input.wide {
+  width: 650px;
+  max-width: 100%;
+}
+
+input,
+textarea {
+  padding: 30px;
+  border: 0;
+  width: 100%;
+  font-size: 1rem;
+  background-color: #2d2d2d;
+  color: white;
+  border-radius: 4px;
+}
+
+input:focus,
+textarea:focus {
+  outline: 0;
+}
+
+input:focus ~ span,
+textarea:focus ~ span {
+  width: 100%;
+  transition: all 0.075s ease;
+}
+
+textarea {
+  width: 100%;
+  min-height: 15em;
+}
+
+.input-container {
+  width: 650px;
+  max-width: 100%;
+  margin: 20px auto 25px auto;
+}
+
+.submit-btn {
+  float: right;
+  padding: 7px 35px;
+  border-radius: 60px;
+  display: inline-block;
+  background-color: #AFC918;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.06), 0 2px 10px 0 rgba(0, 0, 0, 0.07);
+  transition: all 300ms ease;
+}
+
+.submit-btn:hover {
+  transform: translateY(1px);
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1), 0 1px 1px 0 rgba(0, 0, 0, 0.09);
+}
+
+@media (max-width: 768px) {
+  .submit-btn {
+    width: 100%;
+    float: none;
+    text-align: center;
+  }
+}
+input[type=checkbox] + label {
+  color: #ccc;
+  font-style: italic;
+}
+
+input[type=checkbox]:checked + label {
+  color: #f00;
+  font-style: normal;
+}
+
+.main-contacto {
+  background-color: #2d2d2d;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.box div {
+  width: 300px;
+  height: 300px;
+  text-align: center;
+}
+
+section {
+  padding: 60px 0;
+}
+
+section .section-title {
+  text-align: center;
+  color: #AFC918;
+  margin-bottom: 50px;
+  text-transform: uppercase;
+}
+
+#footer {
+  background: #AFC918 !important;
+}
+
+#footer h5 {
+  padding-left: 10px;
+  padding-bottom: 6px;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+#footer a {
+  color: #ffffff;
+  text-decoration: none !important;
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+#footer ul.social li {
+  padding: 3px 0;
+}
+
+#footer ul.social li a i {
+  margin-right: 5px;
+  font-size: 25px;
+  transition: 0.5s all ease;
+}
+
+#footer ul.social li:hover a i {
+  font-size: 30px;
+  margin-top: -10px;
+}
+
+#footer ul.social li a,
+#footer ul.quick-links li a {
+  color: #ffffff;
+}
+
+#footer ul.social li a:hover {
+  color: #eeeeee;
+}
+
+#footer ul.quick-links li {
+  padding: 3px 0;
+  transition: 0.5s all ease;
+}
+
+#footer ul.quick-links li:hover {
+  padding: 3px 0;
+  margin-left: 5px;
+  font-weight: 700;
+}
+
+#footer ul.quick-links li a i {
+  margin-right: 5px;
+}
+
+#footer ul.quick-links li:hover a i {
+  font-weight: 700;
+}
+
+@media (max-width: 767px) {
+  #footer h5 {
+    padding-left: 0;
+    border-left: transparent;
+    padding-bottom: 0px;
+    margin-bottom: 10px;
+  }
+}
+.header__listamenu--activo {
+  font-weight: bold;
+}
+
+p,
+h2,
+h1,
+a,
+h3,
+div {
+  font-family: "Barlow", sans-serif;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+a:hover {
+  -webkit-text-decoration: underline black;
+          text-decoration: underline black;
+}
+
+.imagenDeFondo {
+  background-image: url("../recursos/foto fondo 1.png");
+  background-size: cover;
+  width: 100%;
+}
+
+.img-redimension {
+  width: 200px;
+  height: 200px;
+  margin: 20px;
+  padding: 20px;
+}
+
+.margenDeParrafos {
+  margin-left: 0px;
+  padding-left: 25px;
+  padding-right: 25px;
+  max-width: 100%;
+  min-height: 500px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+nav {
+  background-color: #AFC918;
+  vertical-align: middle;
+}
+
+.animate__animated.animate__bounce {
+  --animate-duration: 2s;
+}
+
+.b-cart {
+  background-color: #AFC918;
+  border-color: #AFC918;
+}/*# sourceMappingURL=main.css.map */
+
+#carrito {
+  border-collapse: collapse;
+  margin-top: 20px;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  align-content: center
+}
+
+#carrito th {
+  background-color: #eee;
+  color: #333;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+}
+
+#carrito td {
+  border-bottom: 1px solid #ddd;
+  padding: 10px;
+}
+
+#carrito tfoot td {
+  font-weight: bold;
+  text-align: right;
+}
+
+.imagenDeFondo {
+    background-image:url("../recursos/3LogosSeguidos.png");
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+.swal2-styled.swal2-confirm {
+  border: 0;
+  border-radius: 0.25em;
+  background: initial;
+  background-color: #AFC918 !important;
+  color: #90bd49;
+  font-size: 1em;
+}
