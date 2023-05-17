@@ -75,44 +75,63 @@ function mostrarCarrito() {
   const carritoItems = JSON.parse(localStorage.getItem("carrito")) || [];
 
   if (carritoItems.length === 0) {
-    carritoContainer.innerHTML = `<p>El carrito se vacio correctamente</p>`;
+    carritoContainer.innerHTML = `<p>El carrito se vació correctamente</p>`;
     return;
   }
 
   carritoContainer.innerHTML = `
-  <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Producto</th>
-      <th scope="col">Precio</th>
-      <th scope="col">Cantidad</th>
-      <th scope="col">Total</th>
-    </tr>
-  </thead>
-  <tbody>
-      ${carritoItems
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Producto</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${carritoItems
           .map(
-            (item) => `
-    <tr>
-      <th scope="row">${item.nombre}</th>
-      <td>${item.precio}</td>
-      <td>${item.cantidad}</td>
-      <td>${item.precio * item.cantidad}</td>
-    </tr>
-    `
-)
-.join("")}
-  </tbody>
-  <tfoot>
-      <tr>
-        <td colspan="3">Total</td>
-        <td>${calcularTotal(carritoItems)}</td>
-      </tr>
-    </tfoot>
-  </table>
-
-  `;
+            (item, index) => `
+              <tr>
+                <td>${item.nombre}</td>
+                <td>${item.precio}</td>
+                <td>
+                  <button onclick="decrementarCantidad(${index})">-</button>
+                  <span id="cantidad-${index}">${item.cantidad}</span>
+                  <button onclick="incrementarCantidad(${index})">+</button>
+                </td>
+                <td>${item.precio * item.cantidad}</td>
+              </tr>
+            `
+          )
+          .join("")}
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">Total</td>
+          <td>${calcularTotal(carritoItems)}</td>
+        </tr>
+      </tfoot>
+    </table>`;
 }
+
+function incrementarCantidad(index) {
+  const carritoItems = JSON.parse(localStorage.getItem("carrito")) || [];
+  carritoItems[index].cantidad++;
+  localStorage.setItem("carrito", JSON.stringify(carritoItems));
+  mostrarCarrito();
+}
+
+function decrementarCantidad(index) {
+  const carritoItems = JSON.parse(localStorage.getItem("carrito")) || [];
+  if (carritoItems[index].cantidad > 1) {
+    carritoItems[index].cantidad--;
+    localStorage.setItem("carrito", JSON.stringify(carritoItems));
+    mostrarCarrito();
+  }
+}
+
 
 function calcularTotal(productos) {
   return productos.reduce(
@@ -131,8 +150,7 @@ function agregarAlCarrito(event) {
   }
 }
 
-document
-  .getElementById("vaciar-carrito")
+document.getElementById("vaciar-carrito")
   .addEventListener("click", function () {
     Swal.fire({
       title: "¿Estás seguro?",
@@ -154,3 +172,30 @@ document
       }
     })
   });
+
+
+  function finalizarCompra() {
+    const botonFinalizarCompra = document.getElementById("Finalizar-compra")
+      .addEventListener("click", function () {
+        Swal.fire({
+          title: 'Gracias por preferirnos!',
+          text: 'Continuaremos con tu pedido al WhatsApp',
+          imageUrl: 'https://unsplash.it/400/200',
+          imageWidth: 400,
+          imageHeight: 200,
+          imageAlt: 'Custom image',
+        });
+  
+        let productosParaWsp = [];
+        for (let i = 0; i < carrito.length; i++) {
+          productosParaWsp.push(carrito[i].nombre + "$" + carrito[i].precio);
+        }
+        console.log(JSON.stringify(productosParaWsp));
+  
+        setTimeout(function() {
+          window.location.href = 'https://api.whatsapp.com/send?phone=+5491131172985&text=Me%20interesan%20los%20siguientes%20productos' + ' ' + JSON.stringify(productosParaWsp);
+        }, 5000);
+      });
+  }
+  
+  finalizarCompra();
