@@ -88,7 +88,7 @@ function asignarEventosAgregarCarrito() {
 
 
 function mostrarCarrito() {
-  const carritoItems = carrito;
+  const carritoItems = JSON.parse(localStorage.getItem("carrito"));
   if (carritoItems.length === 0) {
     carritoContainer.innerHTML = `<p>El carrito se vació correctamente</p>`;
     return;
@@ -112,10 +112,10 @@ function mostrarCarrito() {
                 <td>${item.nombre}</td>
                 <td>${item.precio}</td>
                 <td>
-  <button onclick="decrementarCantidad(${item.carritoId})">-</button>
-  <span id="cantidad-${item.carritoId}">${item.cantidad}</span>
-  <button onclick="incrementarCantidad(${item.carritoId})">+</button>
-</td>
+                <button onclick="decrementarCantidad(${item.id})">-</button>
+                <span id="cantidad-${item.id}">${item.cantidad}</span>
+                <button onclick="incrementarCantidad(${item.id})">+</button>
+              </td>
                 <td>${item.precio * item.cantidad}</td>
               </tr>
             `
@@ -131,9 +131,9 @@ function mostrarCarrito() {
     </table>`;
 }
 
-function incrementarCantidad(carritoId) {
+function incrementarCantidad(id) {
   const carritoItems = JSON.parse(localStorage.getItem("carrito")) || [];
-  const producto = carritoItems.find((item) => item.carritoId === carritoId);
+  const producto = carritoItems.find((item) => item.id === id);
   if (producto) {
     producto.cantidad++;
     localStorage.setItem("carrito", JSON.stringify(carritoItems));
@@ -141,9 +141,9 @@ function incrementarCantidad(carritoId) {
   }
 }
 
-function decrementarCantidad(carritoId) {
+function decrementarCantidad(id) {
   const carritoItems = JSON.parse(localStorage.getItem("carrito")) || [];
-  const producto = carritoItems.find((item) => item.carritoId === carritoId);
+  const producto = carritoItems.find((item) => item.id === id);
   if (producto && producto.cantidad > 1) {
     producto.cantidad--;
     localStorage.setItem("carrito", JSON.stringify(carritoItems));
