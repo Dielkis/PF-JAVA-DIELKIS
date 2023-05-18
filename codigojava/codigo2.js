@@ -88,7 +88,8 @@ function asignarEventosAgregarCarrito() {
 
 
 function mostrarCarrito() {
-  const carritoItems = JSON.parse(localStorage.getItem("carrito"));
+
+  const carritoItems = JSON.parse(localStorage.getItem("carrito")) || [];
   if (carritoItems.length === 0) {
     carritoContainer.innerHTML = `<p>El carrito se vació correctamente</p>`;
     return;
@@ -209,8 +210,9 @@ document.getElementById("vaciar-carrito")
         imageAlt: 'Custom image',
       });
   
-      const productosParaWsp = carrito.map(item => `${item.nombre} $${item.precio} (Cantidad: ${item.cantidad})`);
-      const totalPedido = carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+      const carritoStorage = JSON.parse(localStorage.getItem("carrito"));
+      const productosParaWsp = carritoStorage.map(item => `${item.nombre} $${item.precio} (Cantidad: ${item.cantidad})`);
+      const totalPedido = carritoStorage.reduce((total, item) => total + (item.precio * item.cantidad), 0);
       const mensajeWsp = encodeURIComponent(`Mi carrito de compras: \n\n${productosParaWsp.join('\n')}\n\nTotal del pedido: $${totalPedido}`);
   
       setTimeout(function () {
