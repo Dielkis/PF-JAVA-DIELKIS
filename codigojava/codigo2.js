@@ -21,13 +21,10 @@ function obtenerDatosArchivosJson() {
 }
 
 
-
 function mostrarProductos() {
-  productosContainer.innerHTML = productos.map((producto) => {
+  productosContainer.innerHTML = '<div class="producto imagenDeFondo"><div class="container"><div class="row">' + productos.map((producto) => {
     return `
-    <div class="producto imagenDeFondo">
-        <div class="container">
-            <div class="row">
+
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 col-xl-2 text-center pt-2">
                     <div class="card">
                         <img src="${producto.imagen}" class="card-img-top img-fluid p-2" alt="${producto.nombre}">
@@ -38,11 +35,8 @@ function mostrarProductos() {
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
    `;
-  }).join("");
+  }).join("") + '</div></div></div>';
 
   asignarEventosAgregarCarrito(); // Asignar eventos después de mostrar los productos
 }
@@ -193,8 +187,9 @@ document.getElementById("vaciar-carrito")
         console.log(JSON.stringify(productosParaWsp));
   
         setTimeout(function() {
-          window.location.href = 'https://api.whatsapp.com/send?phone=+5491131172985&text=Me%20interesan%20los%20siguientes%20productos' + ' ' + JSON.stringify(productosParaWsp);
-        }, 5000);
+          window.open('https://api.whatsapp.com/send?phone=+5491131172985&text=Me%20interesan%20los%20siguientes%20productos' + ' ' + JSON.stringify(productosParaWsp)
+          );
+        }, 3000);
       });
   }
   
