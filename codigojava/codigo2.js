@@ -4,7 +4,12 @@ let productos = [];
 const productosContainer = document.getElementById("productos-container");
 const carritoContainer = document.getElementById("carrito-container");
 const vaciarCarritoBtn = document.getElementById("vaciar-carrito");
-document.addEventListener("DOMContentLoaded", obtenerDatosArchivosJson);
+
+document.addEventListener("DOMContentLoaded", () => {
+  obtenerDatosArchivosJson();
+  mostrarCarrito();
+  finalizarCompra(); // Llamada a la función finalizarCompra()
+});
 
 function obtenerDatosArchivosJson() {
   const URLJSON = "https://6462f4954dca1a6613515962.mockapi.io/accesorios";
@@ -20,6 +25,9 @@ function obtenerDatosArchivosJson() {
     });
 }
 
+function productoEnCarrito(producto) {
+  return carrito.some((item) => item.id === producto.id);
+}
 
 function mostrarProductos() {
   productosContainer.innerHTML = '<div class="producto imagenDeFondo"><div class="container"><div class="row">' + productos.map((producto) => {
@@ -48,14 +56,28 @@ function asignarEventosAgregarCarrito() {
     boton.addEventListener('click', (event) => {
       if (!boton.disabled) { // Verificar si el botón está habilitado
         boton.disabled = true; // Deshabilitar el botón temporalmente
-        agregarAlCarrito(event);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Producto agregado',
-          showConfirmButton: false,
-          timer: 1500
-        });
+        const productoId = parseInt(boton.dataset.id);
+        const producto = productos.find((prod) => prod.id === productoId);
+        if (producto && !productoEnCarrito(producto)) {
+          carrito.push(producto);
+          localStorage.setItem("carrito", JSON.stringify(carrito));
+          mostrarCarrito();
+          Swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: 'Producto agregado',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        } else {
+          Swal.fire({
+            position: 'top-end',
+            icon: 'error',
+            title: 'El producto ya está en el carrito',
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
         setTimeout(() => {
           boton.disabled = false; // Habilitar el botón después de un tiempo
         }, 1500);
@@ -66,8 +88,7 @@ function asignarEventosAgregarCarrito() {
 
 
 function mostrarCarrito() {
-  const carritoItems = JSON.parse(localStorage.getItem("carrito")) || [];
-
+  const carritoItems = carrito;
   if (carritoItems.length === 0) {
     carritoContainer.innerHTML = `<p>El carrito se vació correctamente</p>`;
     return;
@@ -85,21 +106,21 @@ function mostrarCarrito() {
       </thead>
       <tbody>
         ${carritoItems
-          .map(
-            (item, index) => `
+      .map(
+        (item, index) => `
               <tr>
                 <td>${item.nombre}</td>
                 <td>${item.precio}</td>
                 <td>
-                  <button onclick="decrementarCantidad(${index})">-</button>
-                  <span id="cantidad-${index}">${item.cantidad}</span>
-                  <button onclick="incrementarCantidad(${index})">+</button>
-                </td>
+  <button onclick="decrementarCantidad(${item.carritoId})">-</button>
+  <span id="cantidad-${item.carritoId}">${item.cantidad}</span>
+  <button onclick="incrementarCantidad(${item.carritoId})">+</button>
+</td>
                 <td>${item.precio * item.cantidad}</td>
               </tr>
             `
-          )
-          .join("")}
+      )
+      .join("")}
       </tbody>
       <tfoot>
         <tr>
@@ -110,17 +131,21 @@ function mostrarCarrito() {
     </table>`;
 }
 
-function incrementarCantidad(index) {
+function incrementarCantidad(carritoId) {
   const carritoItems = JSON.parse(localStorage.getItem("carrito")) || [];
-  carritoItems[index].cantidad++;
-  localStorage.setItem("carrito", JSON.stringify(carritoItems));
-  mostrarCarrito();
+  const producto = carritoItems.find((item) => item.carritoId === carritoId);
+  if (producto) {
+    producto.cantidad++;
+    localStorage.setItem("carrito", JSON.stringify(carritoItems));
+    mostrarCarrito();
+  }
 }
 
-function decrementarCantidad(index) {
+function decrementarCantidad(carritoId) {
   const carritoItems = JSON.parse(localStorage.getItem("carrito")) || [];
-  if (carritoItems[index].cantidad > 1) {
-    carritoItems[index].cantidad--;
+  const producto = carritoItems.find((item) => item.carritoId === carritoId);
+  if (producto && producto.cantidad > 1) {
+    producto.cantidad--;
     localStorage.setItem("carrito", JSON.stringify(carritoItems));
     mostrarCarrito();
   }
@@ -138,7 +163,12 @@ function agregarAlCarrito(event) {
   const productoId = parseInt(event.target.dataset.id);
   const producto = productos.find((prod) => prod.id === productoId);
   if (producto) {
-    carrito.push(producto);
+    const productoEnCarrito = carrito.find((item) => item.id === productoId);
+    if (productoEnCarrito) {
+      productoEnCarrito.cantidad++;
+    } else {
+      carrito.push({ ...producto, cantidad: 1 });
+    }
     localStorage.setItem("carrito", JSON.stringify(carrito));
     mostrarCarrito();
   }
@@ -167,30 +197,24 @@ document.getElementById("vaciar-carrito")
     })
   });
 
-
   function finalizarCompra() {
-    const botonFinalizarCompra = document.getElementById("Finalizar-compra")
-      .addEventListener("click", function () {
-        Swal.fire({
-          title: 'Gracias por preferirnos!',
-          text: 'Continuaremos con tu pedido al WhatsApp',
-          imageUrl: 'https://unsplash.it/400/200',
-          imageWidth: 400,
-          imageHeight: 200,
-          imageAlt: 'Custom image',
-        });
-  
-        let productosParaWsp = [];
-        for (let i = 0; i < carrito.length; i++) {
-          productosParaWsp.push(carrito[i].nombre + "$" + carrito[i].precio);
-        }
-        console.log(JSON.stringify(productosParaWsp));
-  
-        setTimeout(function() {
-          window.open('https://api.whatsapp.com/send?phone=+5491131172985&text=Me%20interesan%20los%20siguientes%20productos' + ' ' + JSON.stringify(productosParaWsp)
-          );
-        }, 3000);
+    const botonFinalizarCompra = document.getElementById("Finalizar-compra");
+    botonFinalizarCompra.addEventListener("click", function () {
+      Swal.fire({
+        title: 'Gracias por preferirnos!',
+        text: 'Continuaremos con tu pedido al WhatsApp',
+        imageUrl: 'https://unsplash.it/400/200',
+        imageWidth: 400,
+        imageHeight: 200,
+        imageAlt: 'Custom image',
       });
-  }
   
-  finalizarCompra();
+      const productosParaWsp = carrito.map(item => `${item.nombre} $${item.precio} (Cantidad: ${item.cantidad})`);
+      const totalPedido = carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+      const mensajeWsp = encodeURIComponent(`Mi carrito de compras: \n\n${productosParaWsp.join('\n')}\n\nTotal del pedido: $${totalPedido}`);
+  
+      setTimeout(function () {
+        window.open(`https://api.whatsapp.com/send?phone=+5491131172985&text=${mensajeWsp}`);
+      }, 3000);
+    });
+  }
